@@ -831,7 +831,6 @@
   "watch.status_starting": "शुरू हो रहा है…",
   "watch.status_error": "इस फ़ोल्डर को नहीं देखा जा सकता: {0}",
   "watch.cli_hint": "कमांड लाइन पर भी: filee watch <folder> --to <format>",
-
   "whats_new.title": "Filee {0} में नया क्या है",
   "whats_new.previous": "पिछला",
   "whats_new.next": "अगला",
@@ -850,5 +849,19 @@
   "whats_new.2_0_0.languages.title": "Filee अब और भाषाएँ बोलता है",
   "whats_new.2_0_0.languages.text": "अंग्रेज़ी, कोरियाई, चीनी और पोलिश के साथ अब स्पैनिश, हिन्दी, जापानी और रूसी भी।",
   "whats_new.2_0_0.more.title": "और भी थोड़ा",
-  "whats_new.2_0_0.more.text": "एक ही डोनट को डिफ़ॉल्ट पर रीसेट करें, पूरा इतिहास खोजें, और गुजराती, हिन्दी या अरबी दस्तावेज़ LibreOffice से बदलें।"
+  "whats_new.2_0_0.more.text": "एक ही डोनट को डिफ़ॉल्ट पर रीसेट करें, पूरा इतिहास खोजें, और गुजराती, हिन्दी या अरबी दस्तावेज़ LibreOffice से बदलें।",
+  "preset.copy_text": "टेक्स्ट कॉपी करें (OCR)",
+  "preset.copy_text.short": "टेक्स्ट कॉपी करें",
+  "preset.read_qr": "QR कोड पढ़ें",
+  "preset.read_qr.short": "QR पढ़ें",
+  "preset.squeeze_25mb": "25 MB के अंदर रखें",
+  "preset.squeeze_25mb.short": "25 MB",
+  "toast.copied_to_clipboard": "क्लिपबोर्ड पर कॉपी किया गया",
+  "toast.copied_qr_to_clipboard": "लिंक क्लिपबोर्ड पर कॉपी किया गया",
+  "toast.copied_words_to_clipboard": "{0} शब्द क्लिपबोर्ड पर कॉपी किए गए",
+  "toast.copy_again": "फिर से कॉपी करें",
+  "presets.copy_to_clipboard": "परिणाम क्लिपबोर्ड पर कॉपी करें (टेक्स्ट / OCR / QR)",
+  "presets.copy_to_clipboard_hint": "डिस्क पर सहेजने के साथ-साथ टेक्स्ट या QR कोड सीधे क्लिपबोर्ड पर कॉपी करता है।",
+  "presets.target_size": "टारगेट फ़ाइल साइज़ स्क्वीज़र",
+  "presets.target_size_hint": "आउटपुट को इस आकार के तहत रखने के लिए बिटरेट और संपीड़न को स्वचालित रूप से समायोजित करता है।"
 }

@@ -16,6 +16,9 @@ public sealed class EngineEnvironment(string dataDirectory)
     /// <summary>Writable directory for engine state (e.g. LibreOffice profiles).</summary>
     public string DataDirectory { get; } = dataDirectory;
 
+    /// <summary>Operating-system specific services (e.g. Windows OCR, clipboard).</summary>
+    public Filee.Core.Platform.IPlatformServices? Platform { get; set; }
+
     /// <summary>
     /// Per-user folder for engines downloaded on demand (see <see cref="EngineInstaller"/>):
     /// %LOCALAPPDATA%\Filee\engines. It is outside the app folder, so app updates keep it, and inside Filee's

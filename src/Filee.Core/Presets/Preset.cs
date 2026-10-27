@@ -102,6 +102,20 @@ public sealed class Preset
     /// <summary>Where and how output files are written.</summary>
     public OutputRule Output { get; set; } = new();
 
+    /// <summary>
+    /// Optional target file size in megabytes (e.g. 25 for Discord/Gmail, 10, 2).
+    /// When set, image quality / video bitrate / PDF compression is automatically squeezed
+    /// to ensure the output strictly stays under this size while maximizing quality.
+    /// </summary>
+    public double? TargetSizeMb { get; set; }
+
+    /// <summary>Target size in bytes, or null if unconstrained.</summary>
+    [JsonIgnore]
+    public long? TargetSizeBytes => TargetSizeMb is > 0 ? (long)(TargetSizeMb.Value * 1024 * 1024) : null;
+
+    /// <summary>True to automatically copy the converted or extracted text to the system clipboard.</summary>
+    public bool CopyToClipboard { get; set; }
+
     /// <summary>A conversion or a group. A kind this version doesn't know (from a newer Filee) is read as a group.</summary>
     [JsonConverter(typeof(PresetKindJsonConverter))]
     public PresetKind Kind { get; set; } = PresetKind.Convert;
@@ -175,6 +189,8 @@ public sealed class Preset
         Archive = Archive.Clone(),
         Trace = Trace.Clone(),
         Output = Output.Clone(),
+        TargetSizeMb = TargetSizeMb,
+        CopyToClipboard = CopyToClipboard,
         Kind = Kind,
         SubPresetIds = [.. SubPresetIds],
     };

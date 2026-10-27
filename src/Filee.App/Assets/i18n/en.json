@@ -1,7 +1,6 @@
 {
   "app.name": "Filee",
   "app.tagline": "Drag, drop, converted.",
-
   "nav.home": "Home",
   "nav.general": "General",
   "nav.triggers": "Shortcuts",
@@ -11,7 +10,6 @@
   "nav.theme": "Theme",
   "nav.engines": "Engines",
   "nav.about": "About",
-
   "tray.open": "Open Filee",
   "tray.pause": "Pause shortcuts",
   "tray.resume": "Resume shortcuts",
@@ -23,7 +21,6 @@
   "close.tray": "Keep in tray",
   "close.quit": "Quit",
   "close.dont_ask": "Don't ask again",
-
   "home.title": "Home",
   "home.drop_title": "Drop files here",
   "home.drop_hint": "Or hold {0} while dragging files in Explorer. The donut toolbar opens at your cursor.",
@@ -44,7 +41,6 @@
   "home.clear_history": "Clear",
   "home.files": "{0} files",
   "home.failed_files": "{0} failed",
-
   "donut.center_drag": "Bring files here",
   "donut.files_same": "{0} × {1}",
   "donut.files_mixed": "{0} files",
@@ -60,7 +56,6 @@
   "donut.group_caption": "Group of {0}",
   "donut.flip_to_back": "{0} ↻ back",
   "donut.flip_to_front": "{0} ↻ front",
-
   "toast.converting": "{0} → {1}",
   "toast.done": "Done",
   "toast.done_errors": "{0} of {1} failed",
@@ -71,7 +66,6 @@
   "toast.cancel": "Cancel",
   "download.badge": "{0}/s · {1}",
   "download.badge_files": "{0} · {1} of {2} files",
-
   "error.unsupported_source": "This file type isn't supported",
   "error.empty_file": "The file is empty (0 bytes). A file made with “New” in the right-click menu stays empty until you open it in its app and save it",
   "format_request.request": "Request this format",
@@ -108,7 +102,6 @@
   "notice.geo_rows_without_location": "Some rows have no usable location and were kept without a shape",
   "notice.geo_field_names": "Shapefile field names are 10 characters at most: some were shortened",
   "notice.geo_shapefile_split": "A Shapefile holds one kind of shape, so points, lines and polygons were saved as separate files",
-
   "engine.reason.not_installed": "Not installed",
   "engine.reason.error": "Error while checking",
   "engine.reason.unsupported_platform": "Not available on this platform",
@@ -142,7 +135,6 @@
   "engine.ghostscript.description": "EPS, PostScript and older Illustrator files to PDF and images; PDF to EPS and PS.",
   "engine.calibre.description": "Rare e-book formats (LIT, LRF, CHM, PDB, RB…) and Kindle output (MOBI, AZW3).\nAbove the HWPX writer, it also makes the PDFs of e-books (much faster for long books).",
   "engine.libreoffice.description": "Reads older and less common formats: DOC, PPT, Pages, Keynote, Numbers, WordPerfect, ClarisWorks, Publisher, Visio…\nAlso saves as DOC, XLS, PPT, ODT, ODP, OpenDocument templates and EMF.",
-
   "profile.images": "Images",
   "profile.pdf": "PDF",
   "profile.office": "Documents",
@@ -162,7 +154,6 @@
   "profile.models": "3D models",
   "profile.geo": "Geospatial",
   "profile.mixed": "Mixed files",
-
   "preset.crop": "Crop",
   "crop.save": "Crop & Save",
   "crop.reset": "Reset",
@@ -171,7 +162,6 @@
   "crop.aspect_free": "Free",
   "crop.aspect_original": "Original",
   "crop.page_counter": "{0} of {1}",
-
   "preset.half_size": "Half size",
   "preset.grayscale": "Grayscale",
   "preset.remove_background": "Remove background",
@@ -200,7 +190,6 @@
   "preset.extract_frames_png": "Extract frames (PNG)",
   "preset.extract_frames_jpg": "Extract frames (JPG)",
   "preset.extract_motion": "Extract Live Photo video",
-
   "format.folder": "Folder",
   "format.category.Image": "Image",
   "format.category.Pdf": "PDF",
@@ -220,7 +209,6 @@
   "format.category.Data": "Data",
   "format.category.Model3D": "3D model",
   "format.category.Geo": "Geospatial",
-
   "general.title": "General",
   "general.language": "Language",
   "general.language_auto": "System default",
@@ -299,7 +287,6 @@
   "general.reset_library": "Reset to defaults",
   "general.reset_confirm": "Replace all presets and toolbar profiles with the defaults?",
   "general.imported": "Imported {0} items",
-
   "triggers.title": "Shortcuts",
   "triggers.description": "Choose how the donut toolbar opens. You can add as many gestures as you like.",
   "triggers.macos_permissions": "Allow Filee in System Settings > Privacy & Security > Accessibility.\nFinder also asks for Automation permission the first time you use a selection shortcut.",
@@ -352,7 +339,6 @@
   "triggers.excluded_none_running": "No other app has a window open.",
   "triggers.excluded_note": "Gestures and shortcuts do nothing while the pointer is over these apps.",
   "triggers.paused": "Shortcuts are paused",
-
   "toolbar.title": "Donut toolbar",
   "toolbar.step_profile": "1. Choose a profile",
   "toolbar.step_arrange": "2. Arrange presets",
@@ -414,7 +400,6 @@
   "toolbar.mixed_others": "Other mixes of files open “{0}”.",
   "toolbar.mixed_others_self": "No mixed profile is left with nothing checked, so this one is also used for every other mix.",
   "tags.remove": "Remove",
-
   "presets.title": "Presets",
   "presets.add": "New",
   "presets.duplicate": "Duplicate",
@@ -573,7 +558,6 @@
   "presets.delete_confirm": "Delete “{0}”? It will also be removed from every toolbar and group.",
   "presets.name_required": "Enter a name",
   "presets.select": "Select a preset to edit it",
-
   "theme.title": "Theme",
   "theme.mode": "Appearance",
   "theme.mode.System": "System",
@@ -585,7 +569,6 @@
   "theme.reduce_motion": "Reduce animations",
   "theme.reduce_motion_hint": "Recommended for older PCs. Turns off transitions and the donut's bounce.",
   "theme.preview": "Preview",
-
   "engines.title": "Conversion engines",
   "engines.description": "Filee picks the best available engine for each conversion.\nWhen several can do the same job, the higher one wins.",
   "engines.available": "Ready",
@@ -655,7 +638,6 @@
   "engines.state.unpacking": "Installing…",
   "engines.state.installed": "Installed",
   "engines.state.failed": "Failed: {0}",
-
   "about.title": "About",
   "about.updates": "Updates",
   "common.search": "Search",
@@ -680,7 +662,6 @@
   "feedback.notice_text": "A star on GitHub helps other people find Filee.\nProblems and ideas are welcome too.",
   "feedback.star": "Star on GitHub",
   "feedback.issue": "Report a problem or idea",
-
   "common.ok": "OK",
   "common.cancel": "Cancel",
   "common.save": "Save",
@@ -690,7 +671,6 @@
   "common.no": "No",
   "common.on": "On",
   "common.off": "Off",
-
   "setup.title": "Choose conversion engines",
   "setup.description": "Images, PDF, Office documents, HWP, e-books, archives, fonts, CAD and 3D models already convert.\nDownload engines only for video and audio or rare formats.",
   "setup.note": "You can install or remove engines at any time in Settings → Engines.",
@@ -851,7 +831,6 @@
   "watch.status_starting": "Starting…",
   "watch.status_error": "Can't watch this folder: {0}",
   "watch.cli_hint": "Also on the command line: filee watch <folder> --to <format>",
-
   "whats_new.title": "What's new in Filee {0}",
   "whats_new.previous": "Previous",
   "whats_new.next": "Next",
@@ -870,5 +849,19 @@
   "whats_new.2_0_0.languages.title": "Filee speaks more languages",
   "whats_new.2_0_0.languages.text": "Spanish, Hindi, Japanese and Russian join English, Korean, Chinese and Polish.",
   "whats_new.2_0_0.more.title": "And a little more",
-  "whats_new.2_0_0.more.text": "Reset a single donut to its defaults, search your whole history, and convert Gujarati, Hindi or Arabic documents through LibreOffice."
+  "whats_new.2_0_0.more.text": "Reset a single donut to its defaults, search your whole history, and convert Gujarati, Hindi or Arabic documents through LibreOffice.",
+  "preset.copy_text": "Copy Text",
+  "preset.copy_text.short": "Copy Text",
+  "preset.read_qr": "Read QR",
+  "preset.read_qr.short": "Read QR",
+  "preset.squeeze_25mb": "Fit Under 25 MB",
+  "preset.squeeze_25mb.short": "25 MB",
+  "toast.copied_to_clipboard": "Copied to clipboard",
+  "toast.copied_qr_to_clipboard": "Copied link to clipboard",
+  "toast.copied_words_to_clipboard": "Extracted {0} words to clipboard",
+  "toast.copy_again": "Copy again",
+  "presets.copy_to_clipboard": "Copy result to clipboard (text / OCR / QR)",
+  "presets.copy_to_clipboard_hint": "Instead of only saving to disk, copies extracted text or decoded QR code straight to your clipboard.",
+  "presets.target_size": "Target file size squeezer",
+  "presets.target_size_hint": "Automatically adjusts video bitrate and compression to guarantee the output stays under this size."
 }

@@ -831,7 +831,6 @@
   "watch.status_starting": "開始中…",
   "watch.status_error": "このフォルダーを監視できません：{0}",
   "watch.cli_hint": "コマンドラインからも使えます：filee watch <folder> --to <format>",
-
   "whats_new.title": "Filee {0} の新機能",
   "whats_new.previous": "前へ",
   "whats_new.next": "次へ",
@@ -850,5 +849,19 @@
   "whats_new.2_0_0.languages.title": "対応言語が増えました",
   "whats_new.2_0_0.languages.text": "英語、韓国語、中国語、ポーランド語に、スペイン語、ヒンディー語、日本語、ロシア語が加わりました。",
   "whats_new.2_0_0.more.title": "ほかにも",
-  "whats_new.2_0_0.more.text": "ドーナツを 1 つだけ既定に戻す、履歴全体を検索する、グジャラート語・ヒンディー語・アラビア語の文書を LibreOffice で変換する、など。"
+  "whats_new.2_0_0.more.text": "ドーナツを 1 つだけ既定に戻す、履歴全体を検索する、グジャラート語・ヒンディー語・アラビア語の文書を LibreOffice で変換する、など。",
+  "preset.copy_text": "テキストをコピー (OCR)",
+  "preset.copy_text.short": "テキストコピー",
+  "preset.read_qr": "QRコード読み取り",
+  "preset.read_qr.short": "QR読み取り",
+  "preset.squeeze_25mb": "25 MB 以下に圧縮",
+  "preset.squeeze_25mb.short": "25 MB",
+  "toast.copied_to_clipboard": "クリップボードにコピーしました",
+  "toast.copied_qr_to_clipboard": "リンクをクリップボードにコピーしました",
+  "toast.copied_words_to_clipboard": "{0}語をクリップボードにコピーしました",
+  "toast.copy_again": "もう一度コピー",
+  "presets.copy_to_clipboard": "結果をクリップボードにコピー (テキスト / OCR / QR)",
+  "presets.copy_to_clipboard_hint": "ディスクへの保存に加え、抽出されたテキストやQRコードをクリップボードに直接コピーします。",
+  "presets.target_size": "目標ファイルサイズ",
+  "presets.target_size_hint": "ビットレートと圧縮率を自動計算し、指定したサイズ以下に収めます。"
 }

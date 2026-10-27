@@ -36,7 +36,7 @@ public sealed class PdfSharpConverter : IConverter, IPdfMerger, IImageTransforme
 
     public Task<IReadOnlyList<string>> ConvertAsync(ConversionStep step, IProgress<double>? progress, CancellationToken cancellationToken) =>
         step.From != "pdf" ? Task.Run(() => ImageToPdf(step, progress, cancellationToken), cancellationToken)
-        : step.Preset.Pdf.Compression == PdfCompression.None ? Task.Run(() => SplitOrExtract(step, progress, cancellationToken), cancellationToken)
+        : (step.Preset.Pdf.Compression == PdfCompression.None && step.Preset.TargetSizeBytes is null) ? Task.Run(() => SplitOrExtract(step, progress, cancellationToken), cancellationToken)
         : Task.Run(() => CompressAsync(step, progress, cancellationToken), cancellationToken);
 
     public Task MergeAsync(IReadOnlyList<string> inputPaths, string outputPath, CancellationToken cancellationToken) =>
@@ -206,6 +206,8 @@ public sealed class PdfSharpConverter : IConverter, IPdfMerger, IImageTransforme
     private static async Task<bool> CompressFileAsync(string plain, string output, Preset preset, string? gs, string scratch, CancellationToken ct)
     {
         var level = preset.Pdf.Compression;
+        if (level == PdfCompression.None && preset.TargetSizeBytes is > 0)
+            level = PdfCompression.Ebook;
         var candidates = new List<string>();
         Exception? failure = null;
         var builtIn = Path.Combine(scratch, Guid.NewGuid().ToString("N")[..8] + "-filee.pdf");
@@ -236,6 +238,26 @@ public sealed class PdfSharpConverter : IConverter, IPdfMerger, IImageTransforme
             catch (Exception) when (failure is not null)
             {
                 throw failure;
+            }
+        }
+
+        if (preset.TargetSizeBytes is > 0 && level != PdfCompression.Screen)
+        {
+            var currentBest = candidates.Select(path => new FileInfo(path)).MinBy(file => file.Length);
+            if (currentBest is null || currentBest.Length > preset.TargetSizeBytes.Value)
+            {
+                var screenPath = Path.Combine(scratch, Guid.NewGuid().ToString("N")[..8] + "-screen.pdf");
+                try
+                {
+                    using var document = OpenForChanges(plain);
+                    PdfCompressor.Compress(document, PdfCompression.Screen, preset.Image.KeepMetadata, ct);
+                    document.Save(screenPath);
+                    candidates.Add(screenPath);
+                }
+                catch
+                {
+                    // Ignore screen compression failure
+                }
             }
         }
 

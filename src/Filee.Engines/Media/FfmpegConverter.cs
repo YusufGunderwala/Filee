@@ -153,7 +153,7 @@ public sealed partial class FfmpegConverter(ILogger? logger = null) : IConverter
         var speed = step.To is "gif" or "apng" ? step.Preset.Image.PlaybackSpeed : 1;
         IReadOnlyList<FfmpegPass> Plan(HardwareEncoder? encoder) => still
             ? MediaEncoding.PlanStill(input, output, step.To, media, info)
-            : MediaEncoding.Plan(input, output, step.To, media, info, step.WorkDirectory, cover, encoders, encoder, speed);
+            : MediaEncoding.Plan(input, output, step.To, media, info, step.WorkDirectory, cover, encoders, encoder, speed, step.Preset.TargetSizeBytes);
         // Throws for a missing stream before anything is written (an existing file of that name stays untouched).
         var passes = Plan(hardware);
         // FFmpeg reports the position in the output, which a speed change makes longer or shorter.

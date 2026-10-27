@@ -99,7 +99,60 @@ public sealed class MagickImageConverter : IConverter, ITiffMerger, IImageTransf
         progress?.Report(0.7);
 
         var written = ImageEncoder.Write(frames, step.To, step.Output, step.Preset.Image, step.InputPath, animation);
+        if (step.Preset.TargetSizeBytes is > 0)
+            EnforceTargetSize(written, frames, step.To, step.Preset.TargetSizeBytes.Value);
         progress?.Report(1);
         return written;
+    }
+
+    private static void EnforceTargetSize(IReadOnlyList<string> written, IReadOnlyList<IMagickImage<byte>> frames, string targetFormat, long targetSizeBytes)
+    {
+        if (written.Count == 0 || frames.Count == 0 || targetSizeBytes <= 0)
+            return;
+
+        var (format, _) = ImageEncoder.OutputFormat(targetFormat, new Filee.Core.Presets.ImageOptions());
+
+        for (var i = 0; i < written.Count; i++)
+        {
+            var path = written[i];
+            if (!File.Exists(path))
+                continue;
+
+            var fi = new FileInfo(path);
+            if (fi.Length <= targetSizeBytes)
+                continue;
+
+            var frameIndex = Math.Min(i, frames.Count - 1);
+            using var candidate = frames[frameIndex].Clone();
+
+            var qualityLevels = new[] { 75, 60, 45, 30, 20, 10 };
+            var squeezed = false;
+
+            foreach (var q in qualityLevels)
+            {
+                candidate.Quality = (uint)q;
+                candidate.Write(path, format);
+                if (new FileInfo(path).Length <= targetSizeBytes)
+                {
+                    squeezed = true;
+                    break;
+                }
+            }
+
+            if (!squeezed)
+            {
+                var scaleFactors = new[] { 0.8, 0.6, 0.45, 0.3 };
+                foreach (var factor in scaleFactors)
+                {
+                    var newWidth = Math.Max(16, (int)(candidate.Width * factor));
+                    var newHeight = Math.Max(16, (int)(candidate.Height * factor));
+                    candidate.Resize((uint)newWidth, (uint)newHeight);
+                    candidate.Quality = 35;
+                    candidate.Write(path, format);
+                    if (new FileInfo(path).Length <= targetSizeBytes)
+                        break;
+                }
+            }
+        }
     }
 }

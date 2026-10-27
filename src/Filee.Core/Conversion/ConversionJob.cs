@@ -56,6 +56,9 @@ public sealed class FileResult
     /// nothing, so the PDF was copied as it is), if any.
     /// </summary>
     public string? NoticeKey { get; set; }
+
+    /// <summary>Extracted text or decoded QR payload, if any.</summary>
+    public string? ExtractedText { get; set; }
 }
 
 /// <summary>A batch of files converted with one preset.</summary>
@@ -84,6 +87,9 @@ public sealed class ConversionJob
     public string PresetDisplayName { get; }
     public IReadOnlyList<FileResult> Files { get; }
     public JobState State { get; internal set; } = JobState.Queued;
+
+    /// <summary>Combined extracted text or decoded QR payload across all files in this job, if any.</summary>
+    public string? ExtractedText { get; set; }
 
     /// <summary>Overall progress 0..1.</summary>
     public double Progress => Files.Count == 0 ? 1 : Files.Average(f => f.Progress);

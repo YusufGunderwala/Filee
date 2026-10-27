@@ -715,6 +715,24 @@ internal static class SettingsMigrations
         //      back. One the user emptied is saved empty and stays so.
         if (from < 30 || profiles.Any(p => p.BackPresetIds is null))
             changed |= AddBackFaces(presets, profiles);
+        // v31: "Copy text" (OCR to clipboard & txt), "Read QR" (QR code to clipboard) and "Squeeze < 25MB".
+        if (from < 31)
+        {
+            foreach (var preset in BuiltInData.ClipboardAndSqueezePresets())
+            {
+                if (presets.All(p => p.Id != preset.Id))
+                {
+                    presets.Add(preset);
+                    changed = true;
+                }
+            }
+            if (profiles.FirstOrDefault(p => p.Id == "images") is { } imgProf && imgProf.BackPresetIds is not null)
+            {
+                if (!imgProf.BackPresetIds.Contains("copy-text")) { imgProf.BackPresetIds.Insert(0, "copy-text"); changed = true; }
+                if (!imgProf.BackPresetIds.Contains("read-qr")) { imgProf.BackPresetIds.Insert(1, "read-qr"); changed = true; }
+                if (!imgProf.BackPresetIds.Contains("squeeze-25mb")) { imgProf.BackPresetIds.Insert(2, "squeeze-25mb"); changed = true; }
+            }
+        }
         return changed;
     }
 

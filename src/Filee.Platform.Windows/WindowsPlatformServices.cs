@@ -328,6 +328,11 @@ public sealed class WindowsPlatformServices : IPlatformServices
         }
     }
 
+    public void SetClipboardText(string text) => NativeClipboard.SetText(text);
+
+    public Task<string?> ExtractTextFromImageAsync(string imagePath, CancellationToken cancellationToken = default) =>
+        WindowsOcr.ExtractTextAsync(imagePath, cancellationToken);
+
     private static void TryDelete(string path)
     {
         try

@@ -205,6 +205,11 @@ public sealed class ConversionService
 
     private void OnJobFinished(object? sender, ConversionJob job)
     {
+        if (!string.IsNullOrWhiteSpace(job.ExtractedText) && (job.Preset.CopyToClipboard || job.Preset.Id is "copy-text" or "read-qr"))
+        {
+            _platform.SetClipboardText(job.ExtractedText);
+        }
+
         var entry = HistoryEntry.From(job);
         entry.WatchRuleId = _watchJobs.GetValueOrDefault(job.Id);
         _store.AddHistory(entry);

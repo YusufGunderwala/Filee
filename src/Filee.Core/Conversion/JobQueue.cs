@@ -109,6 +109,11 @@ public sealed class JobQueue : IAsyncDisposable
                     new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount, CancellationToken = CancellationToken.None },
                     async (item, _) => await RunFileAsync(job, item.File, item.Index, planner, workDir, finalOutput: true));
 
+            var allText = string.Join(Environment.NewLine + Environment.NewLine,
+                job.Files.Select(f => f.ExtractedText).Where(t => !string.IsNullOrWhiteSpace(t)));
+            if (!string.IsNullOrWhiteSpace(allText))
+                job.ExtractedText = allText;
+
             job.State = job.CancellationToken.IsCancellationRequested ? JobState.Cancelled
                 : job.Files.All(f => f.State is FileState.Done or FileState.Skipped) ? JobState.Completed
                 : job.Files.Any(f => f.State == FileState.Done) ? JobState.CompletedWithErrors
@@ -552,6 +557,21 @@ public sealed class JobQueue : IAsyncDisposable
                 file.Outputs.AddRange(inputs);
                 if (job.Preset.Output.KeepDates)
                     CopyDates(file.SourcePath, inputs);
+
+                if (job.Preset.CopyToClipboard || target == "txt" || job.Preset.Id is "copy-text" or "read-qr")
+                {
+                    try
+                    {
+                        var txtFile = inputs.FirstOrDefault(p => p.EndsWith(".txt", StringComparison.OrdinalIgnoreCase));
+                        if (txtFile is not null && File.Exists(txtFile))
+                        {
+                            file.ExtractedText = File.ReadAllText(txtFile);
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
             }
             file.State = inputs.Count == 0 && finalOutput ? FileState.Skipped : FileState.Done;
             file.Progress = 1;

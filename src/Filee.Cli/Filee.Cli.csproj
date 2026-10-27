@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Filee.Core\Filee.Core.csproj" />
     <ProjectReference Include="..\Filee.Engines\Filee.Engines.csproj" />
+    <ProjectReference Include="..\Filee.Platform.Windows\Filee.Platform.Windows.csproj" Condition="$([MSBuild]::IsOSPlatform('windows'))" />
   </ItemGroup>
 
   <!-- Error messages and built-in preset names, in English (the app's translation file). -->

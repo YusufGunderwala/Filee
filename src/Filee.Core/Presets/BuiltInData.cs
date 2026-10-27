@@ -89,6 +89,30 @@ public static class BuiltInData
         .. ModelPresets(),
         .. GeoPresets(),
         .. TracePresets(),
+        .. ClipboardAndSqueezePresets(),
+    ];
+
+    /// <summary>
+    /// Instant OCR ("Copy text" to clipboard), "Read QR" code to clipboard, and "Squeeze &lt; 25MB" target size.
+    /// Added in schema 31.
+    /// </summary>
+    public static List<Preset> ClipboardAndSqueezePresets() =>
+    [
+        new()
+        {
+            Id = "copy-text", NameKey = "preset.copy_text", TargetFormat = "txt",
+            CopyToClipboard = true, Output = { FileNamePattern = "{name}_text" },
+        },
+        new()
+        {
+            Id = "read-qr", NameKey = "preset.read_qr", TargetFormat = "txt",
+            CopyToClipboard = true, Output = { FileNamePattern = "{name}_qr" },
+        },
+        new()
+        {
+            Id = "squeeze-25mb", NameKey = "preset.squeeze_25mb", TargetFormat = SameAsSource,
+            TargetSizeMb = 25, Output = { FileNamePattern = "{name}_25mb" },
+        },
     ];
 
     /// <summary>
@@ -352,14 +376,14 @@ public static class BuiltInData
             Id = "images", NameKey = "profile.images",
             Extensions = ExtensionsOf(FormatCategory.Image),
             PresetIds = ["to-png", "to-jpg", "to-webp", "to-pdf", "trace-svg", "trace-line-art", "to-tiff", "to-bmp", "to-ico", "half-size"],
-            BackPresetIds = ["tool-crop", "rotate", "flip", "remove-background", "grayscale", "extract-motion", "to-avif", "to-gif", "merge-pdf", "zip-all"],
+            BackPresetIds = ["copy-text", "read-qr", "squeeze-25mb", "tool-crop", "rotate", "flip", "remove-background", "grayscale", "extract-motion", "to-avif", "to-gif", "merge-pdf"],
         },
         new()
         {
             Id = "pdf", NameKey = "profile.pdf",
             Extensions = ["pdf"],
             PresetIds = [.. PdfDonut],
-            BackPresetIds = ["compress-pdf", "to-webp", "to-tiff", "to-html", "to-odt", "to-rtf", "to-azw3", "to-cbz", "zip-all"],
+            BackPresetIds = ["copy-text", "squeeze-25mb", "compress-pdf", "to-webp", "to-tiff", "to-html", "to-odt", "to-rtf", "to-azw3", "to-cbz", "zip-all"],
         },
         new()
         {

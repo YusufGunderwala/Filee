@@ -33,7 +33,12 @@ internal sealed class CliHost : IAsyncDisposable
         EngineEnvironment.LibreOfficeForHwp = store.Settings.LibreOfficeForHwp;
         EngineEnvironment.LibreOfficeForDocuments = store.Settings.LibreOfficeForDocuments;
         EngineEnvironment.LibreOfficeForSheets = store.Settings.LibreOfficeForSheets;
-        var converters = EngineRegistry.CreateAll(new EngineEnvironment(store.Directory));
+        var env = new EngineEnvironment(store.Directory);
+#if WINDOWS || OS_WINDOWS || true
+        if (OperatingSystem.IsWindows())
+            env.Platform = new Filee.Platform.Windows.WindowsPlatformServices();
+#endif
+        var converters = EngineRegistry.CreateAll(env);
         var catalog = new ConverterCatalog(converters) { Priority = store.Settings.EnginePriority };
         var queue = new JobQueue(catalog, EngineRegistry.FindPdfMerger(converters), combiner: EngineRegistry.FindFileCombiner(converters),
             tiffMerger: EngineRegistry.FindTiffMerger(converters));

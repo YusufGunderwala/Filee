@@ -24,7 +24,11 @@ public sealed class DocxWriterConverter : IConverter
 
     public IReadOnlyList<ConversionEdge> Edges { get; } =
         DocumentReaders.BuiltInFormats.Where(f => !WordFormats.Contains(f))
-            .Select(f => new ConversionEdge(f, "docx", f == "pdf" ? Cost + DocumentReaders.PdfPenalty : Cost)).ToList();
+            .SelectMany(f => new[]
+            {
+                new ConversionEdge(f, "docx", f == "pdf" ? Cost + DocumentReaders.PdfPenalty : Cost),
+                new ConversionEdge(f, "doc", f == "pdf" ? Cost + DocumentReaders.PdfPenalty : Cost)
+            }).ToList();
 
     public EngineStatus GetStatus() =>
         EngineStatus.Available(string.Join(", ", Edges.Select(e => e.From.ToUpperInvariant())) + " → DOCX", EngineVersions.BuiltIn);
@@ -35,7 +39,7 @@ public sealed class DocxWriterConverter : IConverter
         var document = await DocumentReaders.ReadAsync(step.InputPath, step.From, step.WorkDirectory, cancellationToken);
         progress?.Report(0.6);
 
-        var output = step.Output.Allocate("docx");
+        var output = step.Output.Allocate(step.To);
         if (output is null)
             return [];
         await Task.Run(() => DocxWriter.Write(document, output), cancellationToken);

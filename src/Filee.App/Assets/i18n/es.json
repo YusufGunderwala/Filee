@@ -831,7 +831,6 @@
   "watch.status_starting": "Iniciando…",
   "watch.status_error": "No se puede supervisar esta carpeta: {0}",
   "watch.cli_hint": "También en la línea de comandos: filee watch <carpeta> --to <formato>",
-
   "whats_new.title": "Novedades de Filee {0}",
   "whats_new.previous": "Anterior",
   "whats_new.next": "Siguiente",
@@ -850,5 +849,19 @@
   "whats_new.2_0_0.languages.title": "Filee habla más idiomas",
   "whats_new.2_0_0.languages.text": "El español, el hindi, el japonés y el ruso se suman al inglés, el coreano, el chino y el polaco.",
   "whats_new.2_0_0.more.title": "Y un poco más",
-  "whats_new.2_0_0.more.text": "Restablece un solo menú circular, busca en todo tu historial y convierte documentos en guyaratí, hindi o árabe con LibreOffice."
+  "whats_new.2_0_0.more.text": "Restablece un solo menú circular, busca en todo tu historial y convierte documentos en guyaratí, hindi o árabe con LibreOffice.",
+  "preset.copy_text": "Copiar texto (OCR)",
+  "preset.copy_text.short": "Copiar texto",
+  "preset.read_qr": "Leer código QR",
+  "preset.read_qr.short": "Leer QR",
+  "preset.squeeze_25mb": "Ajustar bajo 25 MB",
+  "preset.squeeze_25mb.short": "25 MB",
+  "toast.copied_to_clipboard": "Copiado al portapapeles",
+  "toast.copied_qr_to_clipboard": "Enlace copiado al portapapeles",
+  "toast.copied_words_to_clipboard": "{0} palabras extraídas al portapapeles",
+  "toast.copy_again": "Copiar de nuevo",
+  "presets.copy_to_clipboard": "Copiar resultado al portapapeles (texto / OCR / QR)",
+  "presets.copy_to_clipboard_hint": "Copia el texto extraído o el código QR al portapapeles directamente.",
+  "presets.target_size": "Ajustar al tamaño de archivo objetivo",
+  "presets.target_size_hint": "Calcula la tasa de bits y compresión óptimas para mantenerse bajo este límite."
 }

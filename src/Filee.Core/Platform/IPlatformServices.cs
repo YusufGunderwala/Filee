@@ -107,6 +107,13 @@ public interface IPlatformServices
     /// window below normal ones (seen after the Photos app opened) while it still reports itself as topmost.
     /// </summary>
     void RaiseTopmost(nint windowHandle);
+
+    /// <summary>Puts plain text on the system clipboard.</summary>
+    void SetClipboardText(string text) { }
+
+    /// <summary>Extracts text from an image file using native platform OCR, or null if unsupported.</summary>
+    Task<string?> ExtractTextFromImageAsync(string imagePath, CancellationToken cancellationToken = default) =>
+        Task.FromResult<string?>(null);
 }
 
 /// <summary>Whether "Convert with Filee" is in the top-level Windows 11 File Explorer menu (not just "Show more options").</summary>
@@ -147,6 +154,13 @@ public sealed class NullPlatformServices : IPlatformServices
 
     public Task<ModernContextMenuResult> SetModernContextMenuAsync(bool enabled, string executablePath) =>
         Task.FromResult(new ModernContextMenuResult(false, Error: "Not supported on this platform."));
+
+    /// <summary>Puts plain text on the system clipboard.</summary>
+    public void SetClipboardText(string text) { }
+
+    /// <summary>Extracts text from an image file using native platform OCR, or null if unsupported.</summary>
+    public Task<string?> ExtractTextFromImageAsync(string imagePath, CancellationToken cancellationToken = default) =>
+        Task.FromResult<string?>(null);
 
     public void RaiseTopmost(nint windowHandle) { }
 

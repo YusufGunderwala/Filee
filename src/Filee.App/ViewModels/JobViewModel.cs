@@ -74,6 +74,7 @@ public sealed partial class JobViewModel : ObservableObject
     [ObservableProperty] private bool _isRunning = true;
     [ObservableProperty] private bool _hasErrors;
     [ObservableProperty] private bool _hasOutputs;
+    [ObservableProperty] private bool _isCopiedToClipboard;
     [ObservableProperty] private string? _errorDetails;
     [ObservableProperty] private bool _canRetry;
 
@@ -118,9 +119,19 @@ public sealed partial class JobViewModel : ObservableObject
         Notices = noted.Count == 0 ? null : string.Join(Environment.NewLine,
             noted.Select(f => $"{Path.GetFileName(f.SourcePath)} — {_loc[f.NoticeKey!]}"));
 
+        if (Job.State == JobState.Completed && !string.IsNullOrWhiteSpace(Job.ExtractedText) && (Job.Preset.CopyToClipboard || Job.Preset.Id is "copy-text" or "read-qr"))
+        {
+            IsCopiedToClipboard = true;
+        }
+
         Status = Job.State switch
         {
             JobState.Completed when Job.Files.All(f => f.State == FileState.Skipped) => _loc["toast.skipped"],
+            JobState.Completed when IsCopiedToClipboard && Job.Preset.Id == "read-qr" => _loc["toast.copied_qr_to_clipboard"],
+            JobState.Completed when IsCopiedToClipboard =>
+                WordCount(Job.ExtractedText) is var wc && wc > 0
+                    ? _loc.Format("toast.copied_words_to_clipboard", wc)
+                    : _loc["toast.copied_to_clipboard"],
             JobState.Completed => _loc["toast.done"],
             JobState.CompletedWithErrors => _loc.Format("toast.done_errors", failed.Count, Job.Files.Count),
             JobState.Failed => _loc["toast.failed"],
@@ -146,4 +157,14 @@ public sealed partial class JobViewModel : ObservableObject
     /// <summary>Converts the files that failed again (a new job in the toast in place of this one).</summary>
     [RelayCommand]
     private void Retry() => _retry?.Invoke(this);
+
+    [RelayCommand]
+    private void CopyAgain()
+    {
+        if (!string.IsNullOrWhiteSpace(Job.ExtractedText))
+            _platform.SetClipboardText(Job.ExtractedText);
+    }
+
+    private static int WordCount(string? text) =>
+        string.IsNullOrWhiteSpace(text) ? 0 : text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Length;
 }

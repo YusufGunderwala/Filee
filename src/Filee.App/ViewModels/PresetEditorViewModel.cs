@@ -158,6 +158,9 @@ public sealed partial class PresetEditorViewModel : ObservableObject
         _pattern = _edit.Output.FileNamePattern;
         _keepDates = _edit.Output.KeepDates;
         _zipResult = _edit.Output.ZipResult;
+        _targetSizeMb = _edit.TargetSizeMb ?? 25.0;
+        _enableTargetSize = _edit.TargetSizeMb.HasValue && _edit.TargetSizeMb.Value > 0;
+        _copyToClipboard = _edit.CopyToClipboard;
     }
 
     public string PresetId => _original.Id;
@@ -336,6 +339,9 @@ public sealed partial class PresetEditorViewModel : ObservableObject
     [ObservableProperty] private bool _keepDates;
     /// <summary>Geospatial targets: the result is saved as one ZIP (OutputRule.ZipResult).</summary>
     [ObservableProperty] private bool _zipResult;
+    [ObservableProperty] private bool _enableTargetSize;
+    [ObservableProperty] private double _targetSizeMb = 25.0;
+    [ObservableProperty] private bool _copyToClipboard;
     [ObservableProperty] private Choice<MediaQuality> _mediaQuality;
     [ObservableProperty] private Choice<int> _maxHeight;
     [ObservableProperty] private Choice<int> _audioBitrate;
@@ -557,6 +563,8 @@ public sealed partial class PresetEditorViewModel : ObservableObject
         output.KeepDates = KeepDates;
         // Only for geospatial targets, where it is offered: a box ticked for Shapefile must not zip a later PNG.
         output.ZipResult = ShowZipResult && ZipResult;
+        _original.TargetSizeMb = EnableTargetSize && TargetSizeMb > 0 ? TargetSizeMb : null;
+        _original.CopyToClipboard = CopyToClipboard;
         return true;
     }
 

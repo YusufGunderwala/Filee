@@ -148,7 +148,7 @@ internal static class MediaEncoding
     /// <param name="animationSpeed">Playback speed of an animated GIF or APNG (ImageOptions.PlaybackSpeed); 1 keeps the video's.</param>
     /// <exception cref="InvalidOperationException">The file lacks the stream the target needs (e.g. no audio track).</exception>
     public static IReadOnlyList<FfmpegPass> Plan(string input, string output, string target, MediaOptions options, MediaInfo info, string workDirectory,
-        CoverExtras? cover = null, IReadOnlySet<string>? encoders = null, HardwareEncoder? hardware = null, double animationSpeed = 1)
+        CoverExtras? cover = null, IReadOnlySet<string>? encoders = null, HardwareEncoder? hardware = null, double animationSpeed = 1, long? targetSizeBytes = null)
     {
         if (target == "gif")
             return AnimatedGif(input, output, options, info, workDirectory, animationSpeed);
@@ -157,9 +157,9 @@ internal static class MediaEncoding
         if (target == "png")
             return [new FfmpegPass(PosterFrame(input, output, info), 1)];
         if (VideoTargets.TryGetValue(target, out var video))
-            return [new FfmpegPass(Video(input, output, target, video, options, info, encoders, hardware), 1)];
+            return [new FfmpegPass(Video(input, output, target, video, options, info, encoders, hardware, targetSizeBytes), 1)];
         if (AudioTargets.TryGetValue(target, out var audio))
-            return [new FfmpegPass(Audio(input, output, target, audio, options, info, cover), 1)];
+            return [new FfmpegPass(Audio(input, output, target, audio, options, info, cover, targetSizeBytes), 1)];
         if (SubtitleTargets.ContainsKey(target))
             return [new FfmpegPass(Subtitles(input, output, target, info), 1)];
         throw new NotSupportedException($"FFmpeg cannot write '{target}'.");
@@ -222,24 +222,50 @@ internal static class MediaEncoding
             : null;
 
     private static List<string> Video(string input, string output, string target, MediaTarget spec, MediaOptions options, MediaInfo info,
-        IReadOnlySet<string>? encoders, HardwareEncoder? hardware)
+        IReadOnlySet<string>? encoders, HardwareEncoder? hardware, long? targetSizeBytes = null)
     {
         var video = info.Video ?? throw new InvalidOperationException("The file has no video stream.");
         // An input without sound is fine: the output simply has no audio track.
         var audio = options.RemoveAudio ? null : info.Audio;
 
+        int? targetVideoKbps = null;
+        if (targetSizeBytes is > 0 && info.Duration is { } videoDuration && videoDuration.TotalSeconds > 0)
+        {
+            var durationSec = videoDuration.TotalSeconds;
+            // 6% safety margin for muxing/container overhead
+            var totalBits = targetSizeBytes.Value * 8.0 * 0.94;
+            var totalKbps = totalBits / durationSec / 1000.0;
+
+            if (audio is not null)
+            {
+                var audioKbps = options.AudioBitrateKbps > 0
+                    ? options.AudioBitrateKbps
+                    : (totalKbps > 600 ? 128 : 64);
+                if (audioKbps > totalKbps * 0.35)
+                    audioKbps = Math.Max(32, (int)(totalKbps * 0.2));
+
+                options = options.Clone();
+                options.AudioBitrateKbps = audioKbps;
+                targetVideoKbps = Math.Max(32, (int)(totalKbps - audioKbps));
+            }
+            else
+            {
+                targetVideoKbps = Math.Max(32, (int)totalKbps);
+            }
+        }
+
         List<string> args = [.. Common, "-i", input, "-map", "0:V:0"];
         if (audio is not null)
             args.AddRange(["-map", "0:a:0"]);
 
-        if (CanCopyVideo(target, video, options))
+        if (targetSizeBytes is null && CanCopyVideo(target, video, options))
         {
             args.AddRange(["-c:v", "copy"]);
             // Apple plays HEVC in MP4/MOV only under the "hvc1" tag (FFmpeg keeps "hev1" from some sources).
             if (video.Codec == "hevc" && target is "mp4" or "m4v" or "mov")
                 args.AddRange(["-tag:v", "hvc1"]);
         }
-        else if (hardware is not null && HardwareCodec(target, options, info) == hardware.Codec)
+        else if (targetSizeBytes is null && hardware is not null && HardwareCodec(target, options, info) == hardware.Codec)
         {
             // VA-API's device is a global option, so it goes before the input.
             args.InsertRange(Common.Length, HardwareVideo.InputArguments(hardware));
@@ -250,12 +276,12 @@ internal static class MediaEncoding
         {
             var pal = IsPal(video.FrameRate);
             args.AddRange(["-vf", target is "vob" or "dv" ? DvdOrDvFilter(video, pal) : ScaleFilter(options.MaxHeight)]);
-            args.AddRange(VideoCodecArguments(target, VideoEncoder(target, spec.VideoCodec!, options.VideoCodec, encoders), options.Quality, video, pal));
+            args.AddRange(VideoCodecArguments(target, VideoEncoder(target, spec.VideoCodec!, options.VideoCodec, encoders), options.Quality, video, pal, targetVideoKbps));
         }
 
         if (audio is null)
             args.Add("-an");
-        else if (CanCopyAudio(target, audio, options))
+        else if (targetSizeBytes is null && CanCopyAudio(target, audio, options))
             args.AddRange(["-c:a", "copy"]);
         else
             args.AddRange(AudioCodecArguments(target, spec.AudioCodec, options, audio, inVideo: true));
@@ -368,8 +394,30 @@ internal static class MediaEncoding
     /// <summary>PAL (25 fps) for 25/50 fps sources, NTSC (29.97 fps) for everything else.</summary>
     internal static bool IsPal(double fps) => Math.Abs(fps - 25) < 0.5 || Math.Abs(fps - 50) < 1 || Math.Abs(fps - 12.5) < 0.3;
 
-    private static IEnumerable<string> VideoCodecArguments(string target, string codec, MediaQuality quality, VideoStreamInfo video, bool pal)
+    private static IEnumerable<string> VideoCodecArguments(string target, string codec, MediaQuality quality, VideoStreamInfo video, bool pal, int? targetVideoKbps = null)
     {
+        if (targetVideoKbps is > 0)
+        {
+            var vk = targetVideoKbps.Value;
+            var maxrate = (int)Math.Round(vk * 1.35);
+            var bufsize = (int)Math.Round(vk * 2.0);
+            return codec switch
+            {
+                "libx264" => ["-c:v", "libx264", "-preset", "medium", "-b:v", $"{vk}k", "-maxrate", $"{maxrate}k", "-bufsize", $"{bufsize}k", "-pix_fmt", "yuv420p"],
+                "libx265" => ["-c:v", "libx265", "-preset", "medium", "-b:v", $"{vk}k", "-maxrate", $"{maxrate}k", "-bufsize", $"{bufsize}k", .. HighBitDepthArguments(video), "-x265-params", "log-level=error", .. target is "mp4" or "m4v" or "mov" ? ["-tag:v", "hvc1"] : Array.Empty<string>()],
+                "libsvtav1" => ["-c:v", "libsvtav1", "-preset", "8", "-b:v", $"{vk}k", .. HighBitDepthArguments(video)],
+                "libaom-av1" => ["-c:v", "libaom-av1", "-b:v", $"{vk}k", "-cpu-used", "6", "-row-mt", "1", "-tiles", "2x2", .. HighBitDepthArguments(video)],
+                "libvpx-vp9" => ["-c:v", "libvpx-vp9", "-b:v", $"{vk}k", "-maxrate", $"{maxrate}k", "-bufsize", $"{bufsize}k", "-row-mt", "1", "-deadline", "good", "-cpu-used", "4", "-pix_fmt", "yuv420p"],
+                "mpeg4" => ["-c:v", "mpeg4", "-tag:v", "XVID", "-b:v", $"{vk}k", "-g", "250", "-bf", "2", "-pix_fmt", "yuv420p", .. FrameRate(NearestRate(video.FrameRate))],
+                "wmv2" => ["-c:v", "wmv2", "-b:v", $"{vk}k", "-g", "250", "-pix_fmt", "yuv420p", .. FrameRate(NearestRate(video.FrameRate))],
+                "libtheora" => ["-c:v", "libtheora", "-b:v", $"{vk}k", "-pix_fmt", "yuv420p", .. FrameRate(NearestRate(video.FrameRate))],
+                "mpeg2video" when target == "vob" => ["-c:v", "mpeg2video", "-b:v", $"{vk}k", "-maxrate", "9000k", "-minrate", "0", "-bufsize", "1835k", "-g", pal ? "15" : "18", "-bf", "2", "-pix_fmt", "yuv420p", "-r", pal ? "25" : "30000/1001"],
+                "mpeg2video" => ["-c:v", "mpeg2video", "-b:v", $"{vk}k", "-g", "15", "-bf", "2", "-pix_fmt", "yuv420p", "-r", BroadcastRate(video.FrameRate)],
+                "dvvideo" => ["-c:v", "dvvideo", "-pix_fmt", pal ? "yuv420p" : "yuv411p", "-r", pal ? "25" : "30000/1001"],
+                _ => throw new NotSupportedException(codec)
+            };
+        }
+
         // Constant quantizer for the MPEG-style codecs: 2 is the best useful value, 4 good, 7 visibly compressed.
         var quantizer = Text(Choose(quality, 2, 4, 7));
         switch (codec)
@@ -510,9 +558,17 @@ internal static class MediaEncoding
     // ───────────────────────── Audio ─────────────────────────
 
     private static List<string> Audio(string input, string output, string target, MediaTarget spec, MediaOptions options, MediaInfo info,
-        CoverExtras? extras)
+        CoverExtras? extras, long? targetSizeBytes = null)
     {
         var audio = info.Audio ?? throw new InvalidOperationException("The file has no audio track.");
+        if (targetSizeBytes is > 0 && info.Duration is { } audioDuration && audioDuration.TotalSeconds > 0)
+        {
+            var durationSec = audioDuration.TotalSeconds;
+            var totalBits = targetSizeBytes.Value * 8.0 * 0.95;
+            var kbps = (int)(totalBits / durationSec / 1000.0);
+            options = options.Clone();
+            options.AudioBitrateKbps = Math.Clamp(kbps, 16, 320);
+        }
         List<string> args = [.. Common, "-i", input];
         // Ogg: the tags, and the picture as a comment, come from a metadata file (input 1) instead of the source.
         if (extras?.MetadataFile is { } metadata)

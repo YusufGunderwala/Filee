@@ -345,6 +345,16 @@
                   ToolTip.Tip="{DynamicResource presets.keep_dates_hint}" />
         <CheckBox Content="{DynamicResource presets.zip_result}" IsChecked="{Binding ZipResult}" IsVisible="{Binding ShowZipResult}"
                   ToolTip.Tip="{DynamicResource presets.zip_result_hint}" />
+        <CheckBox Content="{DynamicResource presets.copy_to_clipboard}" IsChecked="{Binding CopyToClipboard}"
+                  ToolTip.Tip="{DynamicResource presets.copy_to_clipboard_hint}" />
+        <StackPanel Spacing="6">
+          <CheckBox Content="{DynamicResource presets.target_size}" IsChecked="{Binding EnableTargetSize}"
+                    ToolTip.Tip="{DynamicResource presets.target_size_hint}" />
+          <Grid ColumnDefinitions="Auto,8,*" IsVisible="{Binding EnableTargetSize}" Margin="24,0,0,0">
+            <NumericUpDown Value="{Binding TargetSizeMb}" Minimum="0.1" Maximum="4000" Increment="1" FormatString="0.##" Width="120" />
+            <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="MB" Classes="caption" />
+          </Grid>
+        </StackPanel>
       </StackPanel>
     </Border>
   </StackPanel>

@@ -106,6 +106,12 @@
                     <TextBlock Text="{DynamicResource common.retry}" />
                   </StackPanel>
                 </Button>
+                <Button Classes="accent" Command="{Binding CopyAgainCommand}" IsVisible="{Binding IsCopiedToClipboard}" Padding="10,4">
+                  <StackPanel Orientation="Horizontal" Spacing="6">
+                    <PathIcon Width="13" Height="13" Data="{StaticResource Icon.Copy}" />
+                    <TextBlock Text="{DynamicResource toast.copy_again}" />
+                  </StackPanel>
+                </Button>
                 <Button Classes="accent" Command="{Binding OpenFolderCommand}" IsVisible="{Binding HasOutputs}" Padding="10,4">
                   <StackPanel Orientation="Horizontal" Spacing="6">
                     <PathIcon Width="13" Height="13" Data="{StaticResource Icon.Folder}" />

@@ -48,7 +48,7 @@ public static class AppHost
         services.AddSingleton<ElevationService>();
 
         // Conversion engines
-        services.AddSingleton(_ => new EngineEnvironment(dataDir));
+        services.AddSingleton(sp => new EngineEnvironment(dataDir) { Platform = sp.GetRequiredService<IPlatformServices>() });
         services.AddSingleton(sp => EngineRegistry.CreateAll(sp.GetRequiredService<EngineEnvironment>(), sp.GetRequiredService<ILoggerFactory>()));
         services.AddSingleton(sp => new ConverterCatalog(sp.GetRequiredService<IReadOnlyList<IConverter>>()));
         services.AddSingleton(sp => new JobQueue(
