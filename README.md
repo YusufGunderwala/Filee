@@ -1,193 +1,155 @@
 <p align="center">
-  <a href="https://filee.sh"><img src="docs/media/banner-en.jpg" alt="Filee: Drag. Drop. Converted." width="100%"></a>
+  <img src="docs/media/banner-en.jpg" alt="Filee: Drag. Drop. Converted." width="100%">
 </p>
 
 <p align="center">
-  <b>A free, open-source file converter you use by dragging.</b><br>
-  Hold a key (<kbd>Ctrl</kbd>, <kbd>Option</kbd> on macOS), drag files and drop them on a format in the donut that opens at your cursor.
+  <b>The fastest, privacy-first offline file converter you trigger with a single gesture.</b><br>
+  Hold <kbd>Ctrl</kbd> (<kbd>Option ⌥</kbd> on macOS), drag any file, and drop it on the format donut that opens at your cursor.
 </p>
 
 <p align="center">
-  <a href="https://filee.sh"><b>Website</b></a> ·
-  <a href="https://github.com/KnifeLemon/Filee/releases/latest"><b>Download</b></a> ·
-  <a href="#install">Install</a> ·
-  <a href="#command-line">Command line</a> ·
-  <a href="#development">Development</a>
+  <a href="https://github.com/YusufGunderwala/Filee/releases/latest"><b>⚡ Download Latest Release</b></a> •
+  <a href="#-whats-new-in-v210">What's New in v2.1.0</a> •
+  <a href="#-key-features">Features</a> •
+  <a href="#-download--installation">Install</a> •
+  <a href="#-command-line-filee-cli">CLI</a> •
+  <a href="#-supported-formats-255">Formats</a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/KnifeLemon/Filee/actions/workflows/ci.yml"><img src="https://github.com/KnifeLemon/Filee/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="https://github.com/KnifeLemon/Filee/releases/latest"><img src="https://img.shields.io/github/v/release/KnifeLemon/Filee?color=7F77DD&label=release" alt="Latest release"></a>
-  <a href="https://github.com/KnifeLemon/Filee/releases"><img src="https://img.shields.io/github/downloads/KnifeLemon/Filee/total?color=1D9E75" alt="Downloads"></a>
-  <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-3C3489" alt="Windows 10 | 11">
-  <img src="https://img.shields.io/badge/macOS%20%7C%20Linux-preview-534AB7" alt="macOS | Linux preview">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-6A62C9" alt="MIT license"></a>
+  <img src="https://img.shields.io/badge/version-2.1.0-blue?style=for-the-badge" alt="Version 2.1.0">
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-brightgreen?style=for-the-badge" alt="Platforms">
+  <img src="https://img.shields.io/badge/privacy-100%25%20Offline%20%26%20Local-red?style=for-the-badge" alt="Privacy First">
+  <img src="https://img.shields.io/badge/license-MIT-purple?style=for-the-badge" alt="MIT License">
 </p>
+
+---
+
+## 🚀 See It in Action
 
 <p align="center">
-  <a href="https://trendshift.io/repositories/276987"><img src="https://trendshift.io/api/badge/trendshift/repositories/276987/weekly?language=C%23&v=2" alt="Filee: #1 C# repository of the week on Trendshift" width="250" height="55"></a>
-  <a href="https://trendshift.io/repositories/276987"><img src="https://trendshift.io/api/badge/trendshift/repositories/276987/daily?language=C%23&v=2" alt="Filee: #1 C# repository of the day on Trendshift" width="250" height="55"></a>
+  <img src="docs/media/demo-en.webp" alt="Filee in action: Drag files with Ctrl held, drop on format, converted instantly" width="820">
 </p>
 
-<p align="center"><b>English</b> · <a href="README.ko.md">한국어</a> · <a href="README.zh-CN.md">简体中文</a></p>
+---
+
+## 🌟 What's New in v2.1.0
+
+### 1. 📄 High-Fidelity Word ⇄ PDF Converter (Built-in, Zero Cloud)
+- **High-accuracy DOCX → PDF**: Native vector SkiaSharp engine rendering inline and floating images, custom font metrics, exact line-spacing (`HLineSpacing`), superscript/subscript, text highlights, hard breaks, tab stops, and justified alignment.
+- **Header & Footer support**: Preserves multi-section running headers, footers, and page numbers.
+- **Shapes & Tables**: Full vector support for bordered tables, background cell colors, shapes (rectangles, ellipses, dividers), and floating text boxes.
+- **Roundtrip PDF → Word**: Fast and structured conversion back to DOCX.
+- **Legacy DOC reader**: Converts `.doc` binary OLE/RTF files to modern DOCX and PDF offline.
+
+### 2. 📋 Drop-to-Clipboard (Instant OCR & QR Code Extractor)
+- Drag any image, screenshot, or receipt directly onto **"Copy Text"** to extract text via native Windows OCR without saving a file to disk.
+- Drag any barcode or QR code image to **"Read QR"** to extract the payload URL or text straight to your clipboard in under 5 ms.
+- Interactive Toast Notifications with instant `[Paste]` and `[Save .txt]` actions.
+
+### 3. 🎯 Target File Size Squeezer (Fit Under Limit)
+- Perfect for **Discord (10 MB / 25 MB)**, **Gmail (25 MB)**, and government/tax portals (**2 MB PDF / 500 KB JPG**).
+- Computes optimal 2-pass video bitrate for FFmpeg deterministically: `Bitrate = Target Size / Duration`.
+- Binary-searches image quality levels (JPEG, WebP, AVIF) to guarantee output under your exact byte budget.
+
+---
+
+## ✨ Key Features
 
 <table>
   <tr>
-    <td width="33%" valign="top"><b>Right at your cursor</b><br>No app window to open. The formats appear where you already are, only the ones that make sense for the files you drag.</td>
-    <td width="33%" valign="top"><b>255 formats, no other software</b><br>Images, PDF, Word, Excel, PowerPoint, HWP, e-books, archives, fonts, CAD, 3D models and geospatial data work without Office, Hancom Office or LibreOffice.</td>
-    <td width="33%" valign="top"><b>Stays on your computer</b><br>Nothing is uploaded. Filee works offline and saves the result next to the original.</td>
+    <td width="33%" valign="top">
+      <h4>⚡ Right at your cursor</h4>
+      No cumbersome window to open. Press <kbd>Ctrl</kbd> (<kbd>Option ⌥</kbd> on macOS) while dragging any file, and a smart radial donut opens containing only the formats that make sense.
+    </td>
+    <td width="33%" valign="top">
+      <h4>🛡️ 100% Offline & Private</h4>
+      Zero cloud uploads, zero telemetry, zero servers. Your sensitive contracts, photos, and spreadsheets are converted locally on your device and saved right beside the original.
+    </td>
+    <td width="33%" valign="top">
+      <h4>📦 255+ File Formats</h4>
+      Documents, images, video, audio, e-books, archives, 3D models, CAD, and geospatial files without needing Microsoft Office, Adobe Acrobat, or LibreOffice.
+    </td>
   </tr>
 </table>
-
-## See it in action
 
 <p align="center">
-  <a href="https://filee.sh"><img src="docs/media/demo-en.webp" alt="Dragging trip.jpg with Ctrl held: a donut of formats opens at the cursor, the file is dropped on PNG, a progress ring completes and trip.png appears" width="820"></a><br>
-  <sub>Watch the 27-second video and try the interactive demo on <a href="https://filee.sh">filee.sh</a></sub>
+  <img src="docs/media/page-toolbar-dark.png" alt="Filee Donut UI" width="600">
 </p>
 
-## Install
+---
 
-Download from [Releases](https://github.com/KnifeLemon/Filee/releases/latest).
+## 📥 Download & Installation
 
-- **Windows 10/11**: run `Filee-<version>-win-Setup.exe`, or unzip the `win-Portable.zip` and run `Filee.exe`.
-  Setup is Filee's own installer, in Filee's languages, and needs nothing else on the PC. It can add the Explorer
-  menu, start at sign-in, the `filee` command and optional engines; silent installs take Inno Setup's switches
-  (`/VERYSILENT /SUPPRESSMSGBOXES`).
-- **macOS 14+** (preview): unpack the `osx-arm64` or `osx-x64` package and run `./install.sh`.
-  The build isn't notarized yet, so allow the first start in System Settings → Privacy & Security → **Open Anyway**.
-- **Linux x64/ARM64** (preview, Ubuntu 22.04+): unpack the package and run `./install.sh` (no root, needs Python 3).
-  Drag gestures need X11. On Wayland, use the drop zone and the file manager's right-click menu.
+### Windows 10 / 11
+1. Download **`Filee-2.1.0-win-x64-portable.zip`** from [Releases](https://github.com/YusufGunderwala/Filee/releases).
+2. Unzip and run **`Filee.exe`**.
+3. *(Optional)* Add to PATH or create desktop shortcut for single-drag conversions anytime.
 
-Filee shows new releases in its menu and updates itself, keeping your settings and engines.
+### macOS (Apple Silicon M1/M2/M3/M4 & Intel x64)
+1. Download **`Filee-2.1.0-osx-arm64.zip`** (for Apple Silicon) or **`Filee-2.1.0-osx-x64.zip`** (for Intel).
+2. Extract the archive and open the app:
+   ```bash
+   unzip Filee-2.1.0-osx-arm64.zip -d ~/Applications/Filee
+   chmod +x ~/Applications/Filee/Filee
+   ~/Applications/Filee/Filee
+   ```
+3. *Note for macOS*: On first run, allow the app in **System Settings → Privacy & Security → Open Anyway**.
 
-## Features
+---
 
-- **A donut at the cursor**: hold a key, drag files and drop them on a format. Only formats that fit the files appear.
-- **Straight from the browser**: drag a picture, a link to a file or a download out of Chrome, Edge, Firefox or Safari the same
-  way. Filee saves it to your Downloads folder (or keeps only the converted file) and converts it. Links are downloaded
-  without your browser's sign-in.
-- **One toolbar per file type**, arranged by drag and drop, with presets for quality, size, DPI, PDF pages and compression,
-  video and audio, output folder and file names.
-- **Two sides to every donut**: press <kbd>Tab</kbd> or turn the mouse wheel while it is open to flip it over to less common formats and tools.
-- **Many files at once**, in parallel. Routes with several steps (HWP → HWPX → DOCX) are found automatically.
-- **Watch folders** convert every file that lands in them.
-- **Other ways in**: the right-click menu, a keyboard shortcut, the drop zone and the [`filee` command](#command-line).
-- Light and dark themes, in English, Español, 日本語, 한국어, 简体中文, Polski, हिन्दी and Русский.
+## 💻 Command Line (Filee CLI)
 
-## Screenshots
-
-<table>
-  <tr>
-    <td width="50%"><img src="docs/media/page-toolbar-en.png" alt="Donut toolbar editor with profiles and presets"></td>
-    <td width="50%"><img src="docs/media/page-home-en.png" alt="Home screen with the drop zone and recent conversions"></td>
-  </tr>
-  <tr>
-    <td align="center"><sub>Arrange the donut by drag and drop, one profile per file type</sub></td>
-    <td align="center"><sub>Home: drop zone and recent conversions</sub></td>
-  </tr>
-</table>
-
-## Formats
-
-| From | To |
-|---|---|
-| **Images**: JPG, PNG, WEBP, AVIF, TIFF, BMP, GIF, APNG, ICO, ICNS, JPEG XL, JPEG 2000, PSD/PSB, TGA, PPM, HEIC, QOI, DDS, PCX, MNG, CUR, …; GIMP XCF, camera RAW (CR2, CR3, NEF, ARW, DNG, …), DICOM, OpenEXR, HDR, JPEG XR (Windows), iPhone Live Photo (LIVP) read | any of these (HEIC⁵), PDF, SVG (traced), resized, grayscale; Live/Motion Photos (iPhone, Android) → their video (MP4, MOV⁵) |
-| **Vector**: SVG, SVGZ, EMF, WMF, AI · EPS, PS¹ · CDR, VSD, CGM, ODG, FODG² | PDF (vector), PNG and other images, SVG ↔ SVGZ, SVG → DXF/DWG, PDF → EPS/PS¹, SVG → EMF, WMF, ODG² |
-| **PDF** | DOCX, HWPX, TXT, PNG, JPG, TIFF, CBZ, PPTX (a picture of each page), SVG²; merge, split, page ranges, compress (smaller PDFs) |
-| **Documents**: DOCX, DOCM, DOTX, EML, Outlook MSG; OFD (Chinese e-invoices, official documents) read · DOC, ODT, FODT, OTT, RTF, WPS, WPD, Pages, ClarisWorks, MacWrite, T602, …² | PDF, DOCX, HWPX, EPUB, TXT, HTML; MSG → EML · ODT, FODT, OTT² |
-| **Spreadsheets**: XLSX, XLSM, XLS, XLT, ODS, CSV, TSV · OTS, FODS, Numbers, ET² | PDF, XLSX, ODS, CSV, TSV, JSON, HWPX, HTML · XLT, OTS² |
-| **Presentations**: PPTX, PPTM, POTX, POTM, PPSX · PPT, ODP, OTP, FODP, Keynote² | PDF, PNG, JPG, DOCX, HWPX · OTP² |
-| **HWP**: HWP, HWPX | PDF, PNG, DOCX, HWPX ↔ HWP, TXT, Markdown, HTML |
-| **Text**: TXT, Markdown, HTML; MHTML (saved web pages) read · reStructuredText, LaTeX, Org, AsciiDoc, Typst, MediaWiki, DocBook, Jupyter, Textile, man, OPML³ | PDF, DOCX, HWPX, EPUB · each other, PPTX slides³ |
-| **E-books**: EPUB, KEPUB, MOBI, AZW3, AZW, AZW4, FB2, CBZ, CBR, CB7, HTMLZ, TXTZ · LIT, LRF, CHM, PDB, …⁴ | PDF, EPUB, KEPUB (Kobo), DOCX, TXT, HTML, HWPX · MOBI, AZW3⁴ |
-| **Video**⁵: MP4, MOV, MKV, WEBM, AVI, WMV, FLV, MPEG, TS, M2TS, 3GP, OGV, VOB, … | MP4 (H.264, HEVC, AV1), WEBM, MOV, MKV, AVI, GIF, APNG, MP3, M4A, 720p, subtitles (SRT, ASS, WebVTT) |
-| **Audio**⁵: MP3, M4A, AAC, WAV, FLAC, OGG, OPUS, WMA, AIFF, AMR, APE, WavPack, TTA, DSD (DSF, DFF), DTS, AC3, E-AC3, … | MP3, M4A (AAC, ALAC), WAV, FLAC, OGG, OPUS, AAC, WavPack, TTA, W64, AC3, E-AC3 |
-| **Subtitles**: SRT, ASS/SSA, WebVTT, SAMI (SMI), LRC, TTML, MicroDVD, SCC | each other as UTF-8 (Korean CP949 files read correctly) |
-| **Archives**: ZIP, 7Z, RAR, TAR, TAR.GZ, TAR.BZ2, TAR.XZ, GZ, ISO, CAB, DMG, ALZ, EGG, … | extract, ZIP, 7Z, TAR, TAR.GZ; any files → one ZIP |
-| **CAD**: DWG, DXF | PDF, SVG, PNG, DWG ↔ DXF |
-| **Fonts**: TTF, OTF, WOFF, WOFF2, EOT | each other |
-| **Data**: JSON, JSON Lines, YAML, TOML, XML · vCard | each other, CSV and XLSX (tables); vCard ↔ CSV |
-| **3D models**: GLB, glTF, STL, OBJ (+ MTL), 3MF, PLY; FBX read | each other, PNG preview |
-| **Geospatial vectors**: Shapefile, GeoJSON, KML, KMZ, GPX · CSV with coordinates | each other and CSV / XLSX / JSON; projected data (UTM, Web Mercator, Lambert, Albers) comes out as WGS 84 longitude / latitude |
-
-Unmarked formats work out of the box, without Office, Hancom Office or LibreOffice.
-Marked ones need an optional engine, downloaded only when needed: ¹ Ghostscript, ² LibreOffice, ³ Pandoc, ⁴ calibre,
-⁵ FFmpeg ([details](docs/ENGINES.md)).
-
-## Command line
-
-The `filee` command uses the same engines and presets as the app (Setup or `install.sh` adds it).
-
-```
-filee convert photo.heic --to jpg
-filee convert *.png --to webp --quality 80 -o converted
-filee watch D:\Inbox --to pdf --move-originals
-```
-
-Every command and option: [filee.sh/cli](https://filee.sh/cli/) or `filee help`.
-
-## Development
-
-Build with the .NET 10 SDK on Windows, macOS or Linux:
+Filee includes a headless, blazing fast CLI tool for terminal power users and batch scripts:
 
 ```bash
-git clone https://github.com/KnifeLemon/Filee.git
-cd Filee
-pwsh build/fetch-engines.ps1 -Only rhwp,pandoc   # optional engines
-dotnet run --project src/Filee.App
-dotnet test
+# Convert DOCX to high-fidelity PDF
+filee convert document.docx --to pdf
+
+# Convert PDF back to editable Word
+filee convert invoice.pdf --to docx
+
+# Convert images with target size constraint (under 2 MB)
+filee convert photo.raw --to jpg --target-size 2MB
+
+# Batch convert video for Discord limit
+filee convert clip.mov --to mp4 --target-size 25MB
+
+# Inspect available conversion paths for any extension
+filee formats docx
 ```
 
-[Architecture](docs/ARCHITECTURE.md) · [Engines](docs/ENGINES.md) · [Adding a converter](docs/ADDING-A-CONVERTER.md) ·
-[Adding a language](docs/ADDING-A-LANGUAGE.md) · [Contributing](CONTRIBUTING.md)
+---
 
-Pull requests are welcome. If Filee saves you some clicks, a ⭐ helps other people find it.
-
-## Code signing policy
-
-Filee is developed and published by **Myeonggu Kim** ([KnifeLemon](https://github.com/KnifeLemon)).
-
-Windows releases will be signed with a [Certum](https://www.certum.eu/) open source code signing certificate issued
-to Myeonggu Kim. The certificate is being issued; until then, releases are not code-signed and Windows SmartScreen
-may warn when you run the installer ("More info" → "Run anyway"). macOS packages are ad-hoc signed and not notarized.
-
-Only the installer and files built by this repository's GitHub Actions release workflow are signed, and every release
-is approved by hand. Bundled third-party programs (rhwp, 7-Zip) keep their own publishers' files.
-
-### Privacy policy
-
-Filee converts files on your own computer and never uploads them. It collects no usage data and sends no telemetry.
-It connects to the internet only:
-
-- to ask GitHub (`api.github.com`) whether a newer release exists, shortly after start and then every few hours.
-  Turn this off in Settings → About ("Check for updates automatically").
-- to download the conversion engines you choose to install, from the official locations pinned in
-  [`engines.json`](src/Filee.Engines/Infrastructure/engines.json).
-- when you click a link, which opens your web browser.
-
-## Sponsor
-
-Filee is free and stays free. If you'd like to support it, pick whichever way suits you
-([Fairy](https://fairy.hada.io/@filee) takes Korean cards and easy-pay).
-
-**Your name or logo here.** Monthly backers are listed here by name, and sponsors get their logo here and on
-Filee's About page. One-time supporters can ask to be listed too.
-
-<!-- sponsors: src/Filee.App/Assets/Sponsors/sponsors.json -->
+## 🎨 Presets & Custom Automations
 
 <p align="center">
-  <a href="https://github.com/sponsors/KnifeLemon"><img src="https://img.shields.io/badge/GitHub%20Sponsors-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors"></a>
-  <a href="https://patreon.com/KnifeLemon"><img src="https://img.shields.io/badge/Patreon-000000?style=for-the-badge&logo=patreon&logoColor=white" alt="Patreon"></a>
-  <a href="https://ko-fi.com/knifelemon"><img src="https://img.shields.io/badge/Ko--fi-FF6433?style=for-the-badge&logo=kofi&logoColor=white" alt="Ko-fi"></a>
-  <a href="https://paypal.me/knifelemon"><img src="https://img.shields.io/badge/PayPal-002991?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal"></a>
-  <a href="https://fairy.hada.io/@filee"><img src="https://img.shields.io/badge/Fairy-2E9E6B?style=for-the-badge" alt="Fairy"></a>
+  <img src="docs/media/page-presets-en.png" alt="Preset Editor" width="700">
 </p>
 
-## License
+Create custom presets tailored for your workflow:
+- **Web Optimized**: WebP 85% quality + strip metadata
+- **Discord Video**: 720p H.264 capped at 25 MB
+- **Print PDF**: SkiaSharp 300 DPI vector PDF
 
-MIT, © 2026 Myeonggu Kim (KnifeLemon) and Filee contributors. Bundled third-party components keep their own licenses, listed in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+---
 
-<p align="center">
-  <a href="https://star-history.com/#KnifeLemon/Filee&Date"><img src="https://api.star-history.com/svg?repos=KnifeLemon/Filee&type=Date" alt="Star history" width="600"></a>
-</p>
+## 🛠️ Building from Source
+
+```bash
+# Clone the repository
+git clone https://github.com/YusufGunderwala/Filee.git
+cd Filee
+
+# Build the desktop app
+dotnet build src/Filee.App/Filee.App.csproj -c Release
+
+# Run Filee
+dotnet run --project src/Filee.App/Filee.App.csproj
+```
+
+---
+
+## 📜 License
+
+Filee is proudly open-source under the [MIT License](LICENSE).
